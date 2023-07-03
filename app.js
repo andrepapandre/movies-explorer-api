@@ -4,7 +4,10 @@ const mongoose = require('mongoose');
 const router = require('./routes/index');
 const cors = require('cors');
 const helmet = require('helmet');
+const { errors } = require('celebrate')
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+
+const INTERNAL_ERROR = require('./middlewares/internalError')
 
 const { PORT, DATABASE_ADRESS } = require('./utils/startConfig');
 
@@ -27,11 +30,10 @@ app.use(express.json());
 app.use(requestLogger);
 app.use(errorLogger)
 
-app.use((req, res, next) => {
-  next();
-});
-
 app.use(router);
+
+app.use(errors());
+app.use(INTERNAL_ERROR);
 
 app.listen(PORT, () => {
   console.log(`your backend listenning on ${PORT}`)

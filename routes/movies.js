@@ -3,7 +3,7 @@ const moviesController = require('../controllers/movies');
 
 const isValid = require('../middlewares/validation');
 
-router.get('/', isValid.movieByIdValid, moviesController.getMoviesOwner);
+router.get('/', moviesController.getMoviesOwner);
 router.post('/', isValid.newMovieValid, moviesController.createMovie);
 router.delete('/:movieid', isValid.deleteMovieValid, moviesController.deleteMoviebyId);
 

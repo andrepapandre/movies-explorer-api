@@ -1,13 +1,16 @@
 const movieShema = require('../models/movie');
 const BadRequest = require('../errors/bad-requiest')
+const NotFoundError = require('../errors/not-found-err');
+const ForbiddenError = require('../errors/forbitten-err');
+
 const {
-  OK,
+  OK, DocNotFound,
 } = require('../statusServerName');
 
 const getMoviesOwner = (req, res, next) => {
 
   movieShema
-    .find({ owner: req.user._id})
+    .find({ owner: req.user._id })
     .populate(['owner'])
     .then((movies) => {
       res.send({ movies });
@@ -31,6 +34,10 @@ const deleteMoviebyId = (req, res, next) => {
       });
     })
     .catch((err) => {
+      if (err.name === DocNotFound) {
+        next(new NotFoundError('Некоректный id'));
+        return;
+      }
       if (err.name === 'CastError') {
         next(new BadRequest('Некоректный id'));
         return;
@@ -40,7 +47,6 @@ const deleteMoviebyId = (req, res, next) => {
 };
 
 const createMovie = (req, res, next) => {
-  console.log(req);
   const owner = req.user
   const {
     country, director, duration, year,
@@ -51,12 +57,15 @@ const createMovie = (req, res, next) => {
     description, image, trailerLink, thumbnail, owner, movieId,
     nameRU, nameEN
   })
-    .then((card) => card.populate('owner'))
-    .then((card) => res.status(201).send(card))
-    .catch((err) => next(err));
+    .then((movie) => card.populate('owner'))
+    .then((movie) => res.status(201).send(movie))
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        next(new BadRequest('Валидация полей не прошла'));
+        return;
+      }
+    });
 };
-
-
 
 module.exports = {
   getMoviesOwner,

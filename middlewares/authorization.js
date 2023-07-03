@@ -4,8 +4,6 @@ const AuthError = require('../errors/auth-err');
 
 const { JWT_SECRET, NODE_ENV } = process.env;
 
-
-// eslint-disable-next-line consistent-return
 module.exports = (req, res, next) => {
   const { authorization } = req.headers;
 
@@ -16,15 +14,11 @@ module.exports = (req, res, next) => {
 
   const token = authorization.replace('Bearer ', '');
 
-  console.log(req.headers);
-  console.log(req.user);
-
   let payload;
 
   try {
     payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
   } catch (err) {
-    next(err)
     next(new AuthError('Неверный e-mail или пароль'));
     return;
   }

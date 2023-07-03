@@ -19,7 +19,7 @@ function objectIdValid(value) {
 
 const deleteMovieValid = celebrate({
   params: Joi.object().keys({
-    _id: Joi.string().custom(objectIdValid),
+    movieid: Joi.string().custom(objectIdValid),
   }),
 });
 const updateProfileValid = celebrate({

@@ -10,7 +10,7 @@ const BadRequest = require('../errors/bad-requiest');
 const getUserInfo = (req, res, next) => {
   userModel.findById(req.user._id)
     .then((user) => res.send(user))
-    .catch(next);
+    .catch((err) => next(err));
 };
 
 const updateUserInfo = (req, res, next) => {

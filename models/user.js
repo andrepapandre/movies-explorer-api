@@ -15,7 +15,7 @@ const user = mongoose.Schema({
     type: String,
     minlength: 2,
     maxlength: 30,
-    default: 'Жак-Ив Кусто',
+    default: 'Ваше имя',
   },
   password: {
     type: String,
