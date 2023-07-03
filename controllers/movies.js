@@ -57,7 +57,7 @@ const createMovie = (req, res, next) => {
     description, image, trailerLink, thumbnail, owner, movieId,
     nameRU, nameEN
   })
-    .then((movie) => card.populate('owner'))
+    .then((movie) => movie.populate('owner'))
     .then((movie) => res.status(201).send(movie))
     .catch((err) => {
       if (err.name === 'ValidationError') {
