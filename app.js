@@ -6,11 +6,11 @@ const cors = require('cors');
 const helmet = require('helmet');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
-const { PORT, PATH_TO_DB } = require('./utils/startConfig');
+const { PORT, DATABASE_ADRESS } = require('./utils/startConfig');
 
-mongoose.connect(PATH_TO_DB)
+mongoose.connect(DATABASE_ADRESS)
   .then(() => {
-    console.log(`Connected to database on ${PATH_TO_DB}`);
+    console.log(`Connected to database on ${DATABASE_ADRESS}`);
   })
   .catch((err) => {
     console.log('Error on database connection');
