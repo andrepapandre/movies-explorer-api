@@ -1,5 +1,5 @@
 const movieShema = require('../models/movie');
-const BadRequest = require('../errors/bad-requiest')
+const BadRequest = require('../errors/bad-requiest');
 const NotFoundError = require('../errors/not-found-err');
 const ForbiddenError = require('../errors/forbitten-err');
 
@@ -8,7 +8,6 @@ const {
 } = require('../statusServerName');
 
 const getMoviesOwner = (req, res, next) => {
-
   movieShema
     .find({ owner: req.user._id })
     .populate(['owner'])
@@ -47,22 +46,30 @@ const deleteMoviebyId = (req, res, next) => {
 };
 
 const createMovie = (req, res, next) => {
-  const owner = req.user
+  const owner = req.user;
   const {
     country, director, duration, year,
-    description, image, trailerLink, thumbnail, movieId, nameRU, nameEN
+    description, image, trailerLink, thumbnail, movieId, nameRU, nameEN,
   } = req.body;
   movieShema.create({
-    country, director, duration, year,
-    description, image, trailerLink, thumbnail, owner, movieId,
-    nameRU, nameEN
+    country,
+    director,
+    duration,
+    year,
+    description,
+    image,
+    trailerLink,
+    thumbnail,
+    owner,
+    movieId,
+    nameRU,
+    nameEN,
   })
     .then((movie) => movie.populate('owner'))
     .then((movie) => res.status(201).send(movie))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequest('Валидация полей не прошла'));
-        return;
       }
     });
 };

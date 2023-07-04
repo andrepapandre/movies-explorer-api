@@ -6,6 +6,7 @@ const {
 } = require('../statusServerName');
 const NotFound = require('../errors/not-found-err');
 const BadRequest = require('../errors/bad-requiest');
+const ConflictErr = require('../errors/conflict-err');
 
 const getUserInfo = (req, res, next) => {
   userModel.findById(req.user._id)
@@ -28,6 +29,15 @@ const updateUserInfo = (req, res, next) => {
         next(new NotFound('Пользователь не найден или _id пользователя некорректен'));
         return;
       }
+      if (err.codeName === 'DuplicateKey') {
+        next(new ConflictErr('Конфликт'));
+        return;
+      }
+      if (err.name === 'MongoServerError') {
+        next(new ConflictErr('Конфликт двух почт'));
+        return;
+      }
+
       next(err);
     });
 };

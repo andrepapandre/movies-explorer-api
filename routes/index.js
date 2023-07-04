@@ -3,7 +3,7 @@ const userRoutes = require('./users');
 const movieRoutes = require('./movies');
 const auth = require('../middlewares/authorization');
 const authorization = require('../controllers/authorization');
-const NotFoundError = require('../errors/not-found-err')
+const NotFoundError = require('../errors/not-found-err');
 
 const isValid = require('../middlewares/validation');
 

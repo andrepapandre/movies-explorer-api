@@ -24,7 +24,7 @@ const createUser = (req, res, next) => {
         }
         return next(err);
       });
-  });
+  }).catch((err) => next(err));
 };
 
 const loginUser = (req, res, next) => {
