@@ -1,0 +1,9 @@
+error.log
+
+request.log
+
+.env
+
+node_modules
+
+.DS_Store
